@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_betabit
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - "3306:3306"
+    networks:
+      - betabit
+
+  laravel_container:
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    container_name: laravel_betabit
+    environment:
+      - DB_HOST=mysql_betabit
+    ports:
+      - "8000:8000"
+    networks:
+      - betabit  
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+networks:
+  betabit:
