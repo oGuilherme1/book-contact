@@ -139,9 +139,12 @@
             v-model:isModalOpen="isModalOpen" 
             :contact="selectedContact" 
             :mode="formMode"
+            :contacts="contacts"
             v-model:formSuccess="formSuccess" 
             @contactCreated="contactCreated"
             @contactUpdated="contactUpdated"
+            @contactCreatedError="contactCreatedError"
+
         />
 
         <Alert
@@ -149,6 +152,8 @@
             :title="title" 
             :paragraph="paragraph"
             @closeAlert="closeAlert"
+
+
         />
 
     </div>
@@ -245,11 +250,23 @@ export default {
         contactCreated() {
             this.alertOpen = true;
             this.title = 'Contato criado com sucesso!';
+            this.paragraph = '';
         },
 
         contactUpdated() {
             this.alertOpen = true;
             this.title = 'Contato atualizado com sucesso!';
+        },
+
+        contactCreatedError(error: string) {
+            this.alertOpen = true;
+            this.title = 'Error ao criar contato!';
+            this.paragraph = error;
+        },
+
+        contactUpdatedError() {
+            this.alertOpen = true;
+            this.title = 'Error ao atualizar contato!';
         },
 
         closeAlert() {

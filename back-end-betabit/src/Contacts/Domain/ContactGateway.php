@@ -11,6 +11,6 @@ interface ContactGateway
     public function get(int $id): array;
     public function getAll(int $idUSer): array;
     public function delete(int $id): void;
-    public function findEmail(string $email): bool;
+    public function findEmail(string $email, int $idUser): bool;
     
 }

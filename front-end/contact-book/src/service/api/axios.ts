@@ -27,7 +27,12 @@ export const createContact = async (data: FormData) => {
     });
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Erro ao criar contato');
+    if(error.response.data.message) {
+      throw new Error('Esse email ja está sendo usado por outro usuário');
+    }
+    if(error.response.data.phone) {
+      throw new Error(error.response.data.phone);
+    }
   }
 };
 
@@ -40,8 +45,12 @@ export const updateContact = async (data: FormData) => {
     });
     return response.data;
   } catch (error: any) {
-    console.log(error)
-    throw new Error(error.response?.data?.message || 'Erro ao atualizar contato');
+    if(error.response.data.message) {
+      throw new Error('Esse email ja está sendo usado por outro usuário');
+    }
+    if(error.response.data.phone) {
+      throw new Error(error.response.data.phone);
+    }
   }
 };
 

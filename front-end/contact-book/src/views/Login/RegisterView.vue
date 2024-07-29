@@ -130,6 +130,7 @@ export default {
         this.$emit('registerSuccess');
         this.openAlert = true;
         this.title = 'Usuário registrado com sucesso';
+        this.paragraph = '';
         this.form = {...this.getDefaultForm()};
         
       } catch (error) {

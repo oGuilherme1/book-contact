@@ -111,6 +111,11 @@ export default {
       required: true,
       validator: value => ['create', 'update'].includes(value)
     },
+    contacts: {
+      type: Array,
+      required: true
+    },
+
     contact: {
       type: Object,
       default: () => ({
@@ -140,9 +145,11 @@ export default {
       handler(newData) {
         if (this.mode === 'update') {
           this.form = { ...this.getFormFromContact(newData) };
+          this.errors = { ...this.getDefaultForm() };
         }
         if (this.mode === 'create') {
           this.form = { ...this.getDefaultForm() };
+          this.errors = { ...this.getDefaultForm() };
         }
       }
     }
@@ -182,13 +189,26 @@ export default {
         valid = false;
       }
 
+      if (this.form.email) {
+        const emailExisting = this.contacts.some(contact => contact.email === this.form.email && contact !== this.contact);
+        if (emailExisting) {
+          this.errors.email = 'Email já está em uso.';
+          valid = false;
+        }
+      }
+
       if (!this.form.phone) {
         this.errors.phone = 'Telefone é obrigatório.';
         valid = false;
       }
 
-      if(this.form.phone.length < 11) {
+      if (this.form.phone.length < 11) {
         this.errors.phone = 'Telefone deve ter pelo menos 11 caracteres.';
+        valid = false;
+      }
+
+      if (this.form.phone !== this.form.phone.replace(/[^0-9]/g, '')) {
+        this.errors.phone = 'Telefone deve conter apenas números.';
         valid = false;
       }
 
@@ -203,7 +223,7 @@ export default {
       }
 
       const formData = new FormData();
-      if(this.mode === 'update'){
+      if (this.mode === 'update') {
         formData.append('id', this.contact.id);
       }
       formData.append('name', this.form.name);
@@ -217,9 +237,10 @@ export default {
           this.$emit('contactCreated');
           this.closeModal();
           this.updateFormSuccess();
-          this.form = { ...this.getDefaultForm()};
+          this.form = { ...this.getDefaultForm() };
         }
         if (this.mode === 'update') {
+          console.log(this.contacts);
           if (!this.contact.id) {
             throw new Error('ID do contato não fornecido para atualização');
           }
@@ -230,8 +251,15 @@ export default {
         }
 
       } catch (error) {
-        console.error('Erro:', error);
 
+        if (this.mode === 'create') {
+          this.$emit('contactCreatedError', error.message);
+        }
+
+        if (this.mode === 'update') {
+          this.$emit('contactUpdatedError', error.message);
+        }
+        console.error('Erro:', error);
       }
     },
 

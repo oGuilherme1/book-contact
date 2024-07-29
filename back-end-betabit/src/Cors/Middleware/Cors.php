@@ -29,8 +29,6 @@ class Cors
             $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
         }
 
-        Log::info($response->headers->all());
-
         return $response;
     }
 }

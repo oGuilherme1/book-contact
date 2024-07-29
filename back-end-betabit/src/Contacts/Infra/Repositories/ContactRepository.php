@@ -47,9 +47,12 @@ class ContactRepository implements ContactGateway
         }
     }
 
-    public function findEmail(string $email): bool
+    public function findEmail(string $email, int $idUser): bool
     {
-        $exists = Contact::where('email', $email)->exists();
+        $exists = Contact::where([
+            ['idUser', '=', $idUser],
+            ['email', '=', $email] 
+        ])->exists();
 
         Log::info('Email checked:', ['email' => $email, 'exists' => $exists]);
         return $exists;

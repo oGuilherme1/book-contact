@@ -17,7 +17,9 @@
     </td>
     <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap hidden lg:table-cell">
       <div class="flex items-center gap-x-2">
-        <img :src="contact.imageURL" alt="" class=" object-cover w-8 h-8 rounded-full" />
+        <a :href="contact.imageURL" target="_blank">
+          <img :src="contact.imageURL" alt="" class="object-cover w-8 h-8 rounded-full" />
+        </a>
       </div>
     </td>
     <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap hidden lg:table-cell">

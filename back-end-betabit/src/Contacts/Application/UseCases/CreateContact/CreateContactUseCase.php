@@ -27,7 +27,7 @@ class CreateContactUseCase
     {
         try {
 
-            $existingEmail = $this->contactGateway->findEmail($inputDTO->getEmail());
+            $existingEmail = $this->contactGateway->findEmail($inputDTO->getEmail(), $inputDTO->getIdUser());
 
             if($existingEmail) {
                 throw new Exception('This email already exists');
